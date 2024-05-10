@@ -9,10 +9,14 @@ from langchain_core.runnables import RunnablePassthrough
 from langchain_community.utilities import SQLDatabase
 from langchain_core.output_parsers import StrOutputParser
 from langchain_groq import ChatGroq
+from valutation import append_to_json
+import pandas as pd
 
 load_dotenv()
 
 db = SQLDatabase.from_uri("postgresql+psycopg2://postgres:postgres@localhost/youTubeDataset")
+
+file_path = "./test/simple_valutation.json"
 
 def get_database_info(db):
   template = """
@@ -40,6 +44,20 @@ def get_database_info(db):
     | StrOutputParser()
   )
 
+# def get_database_info():
+#     data = {
+#     "attribute": ["video_id", "title", "channel_id", "channel_title", "category_id", "tags", 
+#                   "view_count", "likes", "dislikes", "comment_count", "thumbnail_link", 
+#                   "comments_disabled", "ratings_disabled", "description", "published_date", 
+#                   "published_time"],
+#     "type": ["TEXT", "TEXT", "TEXT", "TEXT", "BIGINT", "TEXT", "BIGINT", "BIGINT", 
+#              "BIGINT", "BIGINT", "TEXT", "BOOLEAN", "BOOLEAN", "TEXT", "TEXT", "TEXT"]
+#     }
+
+#     df = pd.DataFrame(data)
+    
+
+
 def get_sql_chain(db):
   template = """
     You are a data analyst at a company. You are interacting with a user who is asking you questions about the company's database.
@@ -66,6 +84,21 @@ def get_sql_chain(db):
     SQL Query: SELECT 'brazil' AS source, title, published_date FROM brazil WHERE published_date BETWEEN '2020-01-01' AND '2020-12-31' AND published_time BETWEEN '17:00:00' AND '19:00:00';
     Question: mi trovi la published_data in cui si è registrato il maggior numero di visualizzazioni tra marzo 2021 e agosto 2022 in canada, restituendo data di publicazione e numero di visualizzazioni?
     SQL Query: SELECT published_date, view_count FROM canada WHERE published_date BETWEEN '2021-03-01' AND '2022-08-31' ORDER BY view_count DESC LIMIT 1;
+    Question: mi calcoli il numero di video totali nelle tabelle?
+    SQL Query: SELECT SUM(num_videos) from (SELECT COUNT(*) as num_videos FROM brazil
+                UNION ALL SELECT COUNT(*) FROM canada
+                UNION ALL SELECT COUNT(*) FROM korea
+                UNION ALL SELECT COUNT(*) FROM france
+                UNION ALL SELECT COUNT(*) FROM germany
+                UNION ALL SELECT COUNT(*) FROM great_britain
+                UNION ALL SELECT COUNT(*) FROM india
+                UNION ALL SELECT COUNT(*) FROM japan
+                UNION ALL SELECT COUNT(*) FROM mexico
+                UNION ALL SELECT COUNT(*) FROM russia
+                UNION ALL SELECT COUNT(*) FROM united_states)
+    Question: compute the number of video in table mexico with comment disabled?
+    SQL Query: SELECT COUNT(*) FROM mexico WHERE comments_disabled = TRUE;
+    
 
     Your turn:
     
@@ -103,7 +136,7 @@ def get_response(user_query: str, db: SQLDatabase, content):
   
     prompt = ChatPromptTemplate.from_template(template)
     
-    llm = ChatGroq(model="llama3-70b-8192", temperature=0.75, max_tokens=6000)
+    llm = ChatGroq(model="llama3-8b-8192", temperature=0.75, max_tokens=6000)
     # content = sql_chain.invoke({"question": user_query}).content
     
     chain = (
@@ -131,15 +164,15 @@ if "chat_history" not in st.session_state:
 
 st.set_page_config(
     page_title="Query Augmented Generation",
-    # page_icon="./souces/llm.png",
+    page_icon="llm.jpg",
     layout="wide",
 )
 
 col1, col2 = st.columns([8, 1])
 with col1:
     st.title("Query Augmented Generation")
-# with col2:
-    # st.image("./souces/llm.png")
+with col2:
+    st.image("llm.jpg")
 
 # st.title("Query Augmented Generation")
 
@@ -169,10 +202,9 @@ if user_query is not None and user_query.strip() != "":
         with st.chat_message("Human"):
             st.markdown(user_query)
             llm = get_database_info(db=db)
-            content = llm.invoke({"question": user_query})
+            response = llm.invoke({"question": user_query})
             
         with st.chat_message("AI"):
-            response = content
             st.markdown(response)
 
     else:
@@ -188,14 +220,6 @@ if user_query is not None and user_query.strip() != "":
                 print(response)
                 st.markdown(response)
 
-            # except APIStatusError as api:
-            #     if api.message.startswith("Request Entity Too Large"):
-            #         response = "Request is very large. Please add any attributes."
-            #         st.markdown(response)
-            #     else:
-            #         response = "Request is very large. Please add any attributes."
-            #         st.markdown(api.message)
-
             except Exception as exception:
                 response = str(exception)
                 st.markdown(response)
@@ -205,6 +229,6 @@ if user_query is not None and user_query.strip() != "":
                 # else:
                 #     response = "I' dont understand your question. Please, rewrite it again."
                 #     st.markdown(response)
-        
-    
+
+    append_to_json(user_input=user_query, sql_query=content, system_output=response, file_path=file_path)
     st.session_state.chat_history.append(AIMessage(content=response))
