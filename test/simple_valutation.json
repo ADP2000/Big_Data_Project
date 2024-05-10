@@ -1,0 +1,77 @@
+[
+    {
+        "user_input": "mi calcoli il numero di video nella tabella brazil?",
+        "sql_query": "SELECT COUNT(*) FROM brazil;",
+        "system_output": "There are 267590 videos in the Brazil table."
+    },
+    {
+        "user_input": "how many video there are in table russia?",
+        "sql_query": "SELECT COUNT(*) FROM russia;",
+        "system_output": "There are 237839 videos in the Russia table."
+    },
+    {
+        "user_input": "compute the average number of videos in the table canada",
+        "sql_query": "SELECT AVG(num_videos) FROM (SELECT COUNT(*) as num_videos FROM canada) AS canada_videos;",
+        "system_output": "The number of videos in the Canada table is 3."
+    },
+    {
+        "user_input": "compute the average number of like in the table canada",
+        "sql_query": "SELECT AVG(likes) AS avg_likes FROM canada;",
+        "system_output": "The average number of likes in the table canada is approximately 12,006,596."
+    },
+    {
+        "user_input": "find the top 5 videos with the most views in table canada and return channel title and video count ",
+        "sql_query": "SELECT channel_title, COUNT(*) as video_count \nFROM canada \nGROUP BY channel_title \nORDER BY COUNT(*) DESC \nLIMIT 5;",
+        "system_output": "The top 5 videos with the most views in the table canada are:\n\n1. NBA - 1281 views\n2. DAZN Canada - 872 views\n3. FORMULA 1 - 721 views\n4. SPORTSNET - 705 views\n5. MrBeast - 661 views"
+    },
+    {
+        "user_input": "find the top 5 videos with the most views in table canada and return video title and views count",
+        "sql_query": "SELECT title, view_count FROM canada ORDER BY view_count DESC LIMIT 5;",
+        "system_output": "Here are the top 5 videos with the most views in the Canada table:\n\n1. Diljit Dosanjh: CLASH (Official) Music Video | G.O.A.T. - 9140911 views\n2. FRANGLISH - My Salsa feat. Tory Lanez (clip officiel) - 196340 views\n3. Sadak 2 | Official Trailer | Sanjay | Pooja | Alia | Aditya | Jisshu | Mahesh Bhatt | - 9885899 views\n4. Kya Baat Aa : Karan Aujla (Official Video) Tania | Sukh Sanghera Desi Crew | Latest Punjabi Songs - 11308046 views\n5. I left youtube for a month and THIS is what happened. - 2038853 views"
+    },
+    {
+        "user_input": "compute the number of videos in the tables of database",
+        "sql_query": "SELECT SUM(num_videos) \nFROM (SELECT COUNT(*) as num_videos FROM brazil \n       UNION ALL SELECT COUNT(*) FROM canada \n       UNION ALL SELECT COUNT(*) FROM korea \n       UNION ALL SELECT COUNT(*) FROM france \n       UNION ALL SELECT COUNT(*) FROM germany \n       UNION ALL SELECT COUNT(*) FROM great_britain \n       UNION ALL SELECT COUNT(*) FROM india \n       UNION ALL SELECT COUNT(*) FROM japan \n       UNION ALL SELECT COUNT(*) FROM mexico \n       UNION ALL SELECT COUNT(*) FROM russia \n       UNION ALL SELECT COUNT(*) FROM united_states)",
+        "system_output": "The total number of videos across all tables is 2893086."
+    },
+    {
+        "user_input": "compute the average number of videos in each table of database",
+        "sql_query": "SELECT AVG(num_videos) AS avg_videos FROM (SELECT COUNT(*) as num_videos FROM brazil\nUNION ALL SELECT COUNT(*) FROM canada\nUNION ALL SELECT COUNT(*) FROM korea\nUNION ALL SELECT COUNT(*) FROM france\nUNION ALL SELECT COUNT(*) FROM germany\nUNION ALL SELECT COUNT(*) FROM great_britain\nUNION ALL SELECT COUNT(*) FROM india\nUNION ALL SELECT COUNT(*) FROM japan\nUNION ALL SELECT COUNT(*) FROM mexico\nUNION ALL SELECT COUNT(*) FROM russia\nUNION ALL SELECT COUNT(*) FROM united_states)",
+        "system_output": "There are 3 rows in the database."
+    },
+    {
+        "user_input": "compute the average number of videos in each table of database",
+        "sql_query": "SELECT AVG(num_videos) AS avg_videos FROM (\n  SELECT COUNT(*) as num_videos FROM brazil\n  UNION ALL SELECT COUNT(*) FROM canada\n  UNION ALL SELECT COUNT(*) FROM korea\n  UNION ALL SELECT COUNT(*) FROM france\n  UNION ALL SELECT COUNT(*) FROM germany\n  UNION ALL SELECT COUNT(*) FROM great_britain\n  UNION ALL SELECT COUNT(*) FROM india\n  UNION ALL SELECT COUNT(*) FROM japan\n  UNION ALL SELECT COUNT(*) FROM mexico\n  UNION ALL SELECT COUNT(*) FROM russia\n  UNION ALL SELECT COUNT(*) FROM united_states\n) AS total_videos",
+        "system_output": "Based on the provided dataset, I found that the average number of videos in each table is approximately 263007.81."
+    },
+    {
+        "user_input": "compute the number of video in table mexico with comment disabled",
+        "sql_query": "SELECT COUNT(*) \nFROM mexico \nWHERE comments_disabled = FALSE;",
+        "system_output": "There are 265504 videos in the Mexico table with comments disabled."
+    },
+    {
+        "user_input": "compute the number of video in table mexico when comment disabled is TRUE",
+        "sql_query": "SELECT COUNT(*) FROM mexico WHERE comments_disabled = TRUE;",
+        "system_output": "There are 1894 videos in the Mexico table where comments are disabled."
+    },
+    {
+        "user_input": "compute the total number of like for the videos in United States which have more than 120000 views ",
+        "sql_query": "SELECT SUM(likes) \nFROM united_states \nWHERE view_count > 120000;",
+        "system_output": "Here is the response:\n\nThe total number of likes for the videos in United States which have more than 120000 views is **35173699396**."
+    },
+    {
+        "user_input": "find the video with the most comments and likes in table korea",
+        "sql_query": "SELECT video_id, title, comment_count, likes\nFROM korea\nORDER BY comment_count DESC, likes DESC\nLIMIT 1;",
+        "system_output": "Here is the natural language response:\n\nThe video with the most comments and likes in the Korea table is \"BTS (\ubc29\ud0c4\uc18c\ub144\ub2e8) 'Butter' Official MV\" with 6,939,302 comments and 16,464,253 likes."
+    },
+    {
+        "user_input": "how many different video there are in table japan?",
+        "sql_query": "SELECT COUNT(DISTINCT video_id) FROM japan;",
+        "system_output": "There are 31994 different videos in the Japan table."
+    },
+    {
+        "user_input": "how many video there are in table japan?",
+        "sql_query": "SELECT COUNT(*) FROM japan",
+        "system_output": "There are 267578 videos in the table \"japan\"."
+    }
+]
