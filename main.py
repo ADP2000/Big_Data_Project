@@ -11,12 +11,14 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_groq import ChatGroq
 from valutation import append_to_json
 import pandas as pd
+import time
+
 
 load_dotenv()
 
 db = SQLDatabase.from_uri("postgresql+psycopg2://postgres:postgres@localhost/youTubeDataset")
 
-file_path = "./test/simple_valutation.json"
+# file_path = "./test/complex_valutation.json"
 
 def get_database_info(db):
   template = """
@@ -98,6 +100,8 @@ def get_sql_chain(db):
                 UNION ALL SELECT COUNT(*) FROM united_states)
     Question: compute the number of video in table mexico with comment disabled?
     SQL Query: SELECT COUNT(*) FROM mexico WHERE comments_disabled = TRUE;
+    Question: Count the number of videos in the Korea table with the same title as videos in the Japan table.
+    SQL Query: SELECT COUNT(*) FROM korea k INNER JOIN japan j ON k.title = j.title;
     
 
     Your turn:
@@ -193,6 +197,8 @@ for message in st.session_state.chat_history:
 
 user_query = st.chat_input("Type a message...")
 if user_query is not None and user_query.strip() != "":
+    # start_time = time.time()
+
     st.session_state.chat_history.append(HumanMessage(content=user_query))
     
     if user_query == "stop":
@@ -230,5 +236,7 @@ if user_query is not None and user_query.strip() != "":
                 #     response = "I' dont understand your question. Please, rewrite it again."
                 #     st.markdown(response)
 
-    append_to_json(user_input=user_query, sql_query=content, system_output=response, file_path=file_path)
+    # end_time = time.time()
+    # execution_time = end_time - start_time
+    # append_to_json(user_input=user_query, sql_query=content, system_output=response, execution_time = execution_time, file_path=file_path)
     st.session_state.chat_history.append(AIMessage(content=response))
