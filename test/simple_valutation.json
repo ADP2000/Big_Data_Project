@@ -1,77 +1,302 @@
 [
     {
-        "user_input": "mi calcoli il numero di video nella tabella brazil?",
+        "user_input": "how many video there are in table brazil?",
         "sql_query": "SELECT COUNT(*) FROM brazil;",
-        "system_output": "There are 267590 videos in the Brazil table."
+        "system_output": "There are 267590 videos in the Brazil table.",
+        "execution_time": 11.824297308480936
     },
     {
         "user_input": "how many video there are in table russia?",
         "sql_query": "SELECT COUNT(*) FROM russia;",
-        "system_output": "There are 237839 videos in the Russia table."
+        "system_output": "There are 237839 videos in the Russia table.",
+        "execution_time": 10.490195978256953
     },
     {
         "user_input": "compute the average number of videos in the table canada",
         "sql_query": "SELECT AVG(num_videos) FROM (SELECT COUNT(*) as num_videos FROM canada) AS canada_videos;",
-        "system_output": "The number of videos in the Canada table is 3."
+        "system_output": "The number of videos in the Canada table is 3.",
+        "execution_time": 11.82169450412611
     },
     {
         "user_input": "compute the average number of like in the table canada",
         "sql_query": "SELECT AVG(likes) AS avg_likes FROM canada;",
-        "system_output": "The average number of likes in the table canada is approximately 12,006,596."
+        "system_output": "The average number of likes in the table canada is approximately 120065,96.",
+        "execution_time": 14.030490506919683
     },
     {
-        "user_input": "find the top 5 videos with the most views in table canada and return channel title and video count ",
+        "user_input": "find the top 5 videos with the most views in table canada and return channel title and video count",
         "sql_query": "SELECT channel_title, COUNT(*) as video_count \nFROM canada \nGROUP BY channel_title \nORDER BY COUNT(*) DESC \nLIMIT 5;",
-        "system_output": "The top 5 videos with the most views in the table canada are:\n\n1. NBA - 1281 views\n2. DAZN Canada - 872 views\n3. FORMULA 1 - 721 views\n4. SPORTSNET - 705 views\n5. MrBeast - 661 views"
+        "system_output": "The top 5 videos with the most views in the table canada are:\n\n1. NBA - 1281 views\n2. DAZN Canada - 872 views\n3. FORMULA 1 - 721 views\n4. SPORTSNET - 705 views\n5. MrBeast - 661 views",
+        "execution_time": 14.725509095303146
     },
     {
         "user_input": "find the top 5 videos with the most views in table canada and return video title and views count",
         "sql_query": "SELECT title, view_count FROM canada ORDER BY view_count DESC LIMIT 5;",
-        "system_output": "Here are the top 5 videos with the most views in the Canada table:\n\n1. Diljit Dosanjh: CLASH (Official) Music Video | G.O.A.T. - 9140911 views\n2. FRANGLISH - My Salsa feat. Tory Lanez (clip officiel) - 196340 views\n3. Sadak 2 | Official Trailer | Sanjay | Pooja | Alia | Aditya | Jisshu | Mahesh Bhatt | - 9885899 views\n4. Kya Baat Aa : Karan Aujla (Official Video) Tania | Sukh Sanghera Desi Crew | Latest Punjabi Songs - 11308046 views\n5. I left youtube for a month and THIS is what happened. - 2038853 views"
+        "system_output": "Here are the top 5 videos with the most views in the Canada table:\n\n1. Diljit Dosanjh: CLASH (Official) Music Video | G.O.A.T. - 9140911 views\n2. FRANGLISH - My Salsa feat. Tory Lanez (clip officiel) - 196340 views\n3. Sadak 2 | Official Trailer | Sanjay | Pooja | Alia | Aditya | Jisshu | Mahesh Bhatt | - 9885899 views\n4. Kya Baat Aa : Karan Aujla (Official Video) Tania | Sukh Sanghera Desi Crew | Latest Punjabi Songs - 11308046 views\n5. I left youtube for a month and THIS is what happened. - 2038853 views",
+        "execution_time": 8.665233016139407
     },
     {
         "user_input": "compute the number of videos in the tables of database",
         "sql_query": "SELECT SUM(num_videos) \nFROM (SELECT COUNT(*) as num_videos FROM brazil \n       UNION ALL SELECT COUNT(*) FROM canada \n       UNION ALL SELECT COUNT(*) FROM korea \n       UNION ALL SELECT COUNT(*) FROM france \n       UNION ALL SELECT COUNT(*) FROM germany \n       UNION ALL SELECT COUNT(*) FROM great_britain \n       UNION ALL SELECT COUNT(*) FROM india \n       UNION ALL SELECT COUNT(*) FROM japan \n       UNION ALL SELECT COUNT(*) FROM mexico \n       UNION ALL SELECT COUNT(*) FROM russia \n       UNION ALL SELECT COUNT(*) FROM united_states)",
-        "system_output": "The total number of videos across all tables is 2893086."
+        "system_output": "The total number of videos across all tables is 2893086.",
+        "execution_time": 9.619063471904981
     },
     {
         "user_input": "compute the average number of videos in each table of database",
         "sql_query": "SELECT AVG(num_videos) AS avg_videos FROM (SELECT COUNT(*) as num_videos FROM brazil\nUNION ALL SELECT COUNT(*) FROM canada\nUNION ALL SELECT COUNT(*) FROM korea\nUNION ALL SELECT COUNT(*) FROM france\nUNION ALL SELECT COUNT(*) FROM germany\nUNION ALL SELECT COUNT(*) FROM great_britain\nUNION ALL SELECT COUNT(*) FROM india\nUNION ALL SELECT COUNT(*) FROM japan\nUNION ALL SELECT COUNT(*) FROM mexico\nUNION ALL SELECT COUNT(*) FROM russia\nUNION ALL SELECT COUNT(*) FROM united_states)",
-        "system_output": "There are 3 rows in the database."
+        "system_output": "There are 3 rows in the database.",
+        "execution_time": 10.9618035668444
     },
     {
         "user_input": "compute the average number of videos in each table of database",
         "sql_query": "SELECT AVG(num_videos) AS avg_videos FROM (\n  SELECT COUNT(*) as num_videos FROM brazil\n  UNION ALL SELECT COUNT(*) FROM canada\n  UNION ALL SELECT COUNT(*) FROM korea\n  UNION ALL SELECT COUNT(*) FROM france\n  UNION ALL SELECT COUNT(*) FROM germany\n  UNION ALL SELECT COUNT(*) FROM great_britain\n  UNION ALL SELECT COUNT(*) FROM india\n  UNION ALL SELECT COUNT(*) FROM japan\n  UNION ALL SELECT COUNT(*) FROM mexico\n  UNION ALL SELECT COUNT(*) FROM russia\n  UNION ALL SELECT COUNT(*) FROM united_states\n) AS total_videos",
-        "system_output": "Based on the provided dataset, I found that the average number of videos in each table is approximately 263007.81."
+        "system_output": "Based on the provided dataset, I found that the average number of videos in each table is approximately 263007.81.",
+        "execution_time": 13.167327902839412
     },
     {
         "user_input": "compute the number of video in table mexico with comment disabled",
         "sql_query": "SELECT COUNT(*) \nFROM mexico \nWHERE comments_disabled = FALSE;",
-        "system_output": "There are 265504 videos in the Mexico table with comments disabled."
+        "system_output": "There are 265504 videos in the Mexico table with comments disabled.",
+        "execution_time": 11.319300163626911
     },
     {
         "user_input": "compute the number of video in table mexico when comment disabled is TRUE",
         "sql_query": "SELECT COUNT(*) FROM mexico WHERE comments_disabled = TRUE;",
-        "system_output": "There are 1894 videos in the Mexico table where comments are disabled."
+        "system_output": "There are 1894 videos in the Mexico table where comments are disabled.",
+        "execution_time": 14.018106643121419
     },
     {
         "user_input": "compute the total number of like for the videos in United States which have more than 120000 views ",
         "sql_query": "SELECT SUM(likes) \nFROM united_states \nWHERE view_count > 120000;",
-        "system_output": "Here is the response:\n\nThe total number of likes for the videos in United States which have more than 120000 views is **35173699396**."
+        "system_output": "Here is the response:\n\nThe total number of likes for the videos in United States which have more than 120000 views is **35173699396**.",
+        "execution_time": 12.141633347351334
     },
     {
         "user_input": "find the video with the most comments and likes in table korea",
         "sql_query": "SELECT video_id, title, comment_count, likes\nFROM korea\nORDER BY comment_count DESC, likes DESC\nLIMIT 1;",
-        "system_output": "Here is the natural language response:\n\nThe video with the most comments and likes in the Korea table is \"BTS (\ubc29\ud0c4\uc18c\ub144\ub2e8) 'Butter' Official MV\" with 6,939,302 comments and 16,464,253 likes."
+        "system_output": "Here is the natural language response:\n\nThe video with the most comments and likes in the Korea table is \"BTS (\ubc29\ud0c4\uc18c\ub144\ub2e8) 'Butter' Official MV\" with 6,939,302 comments and 16,464,253 likes.",
+        "execution_time": 10.609215361657206
     },
     {
         "user_input": "how many different video there are in table japan?",
         "sql_query": "SELECT COUNT(DISTINCT video_id) FROM japan;",
-        "system_output": "There are 31994 different videos in the Japan table."
+        "system_output": "There are 31994 different videos in the Japan table.",
+        "execution_time": 14.072002691407231
     },
     {
         "user_input": "how many video there are in table japan?",
         "sql_query": "SELECT COUNT(*) FROM japan",
-        "system_output": "There are 267578 videos in the table \"japan\"."
+        "system_output": "There are 267578 videos in the table \"japan\".",
+        "execution_time": 10.815759901711072
+    },
+    {
+        "user_input": "how many videos there are in table canada with number of comments equals to 450",
+        "sql_query": "SELECT COUNT(*) FROM canada WHERE comment_count = 450;",
+        "system_output": "There are 1 video(s) in the \"canada\" table with 450 comments.",
+        "execution_time": 9.010260816484378
+    },
+    {
+        "user_input": "how many videos there are in table mexico with number of likes is more than 1000",
+        "sql_query": "SELECT COUNT(*) FROM mexico WHERE likes > 1000;",
+        "system_output": "According to the video data in the Mexico table, there are 263330 videos where the number of likes is more than 1000.",
+        "execution_time": 14.405846359697552
+    },
+    {
+        "user_input": "how many videos there are in table korea with number of dislike is more than 1000 and less than 2000",
+        "sql_query": "SELECT COUNT(*) FROM korea WHERE dislikes > 1000 AND dislikes < 2000;",
+        "system_output": "There are 5338 videos in the table 'korea' with the number of dislikes between 1000 and 2000.",
+        "execution_time": 14.040199147147295
+    },
+    {
+        "user_input": "find the video with the most likes in United Kingdom",
+        "sql_query": "SELECT title, likes\nFROM great_britain\nORDER BY likes DESC\nLIMIT 1;",
+        "system_output": "The video with the most likes in United Kingdom is \"I left youtube for a month and THIS is what happened\" with 353787 likes.",
+        "execution_time": 12.570683896349612
+    },
+    {
+        "user_input": "find the videos with more than 1000 views in brazil",
+        "sql_query": "SELECT title, view_count FROM brazil WHERE view_count > 1000;",
+        "system_output": "Error code: 413 - {'error': {'message': 'Request Entity Too Large', 'type': 'invalid_request_error', 'code': 'request_too_large'}}",
+        "execution_time": 12.28421227346692
+    },
+    {
+        "user_input": "find the top 10 videos with more than 1000 views in brazil",
+        "sql_query": "SELECT title, view_count\nFROM brazil\nWHERE view_count > 1000\nORDER BY view_count DESC\nLIMIT 10;",
+        "system_output": "The user is asking to find the top 10 videos with more than 1000 views in the Brazil table. The SQL query used to find the answer is:\n\n```sql\nSELECT title, view_count\nFROM brazil\nWHERE view_count > 1000\nORDER BY view_count DESC\nLIMIT 10;\n```\n\nHowever, the table contains videos from multiple countries, not just Brazil. The query should be modified to filter the results to only include videos from Brazil.",
+        "execution_time": 9.574792340299041
+    },
+    {
+        "user_input": "find the top 10 videos with more than 1000 views in canada",
+        "sql_query": "SELECT *\nFROM canada\nWHERE view_count > 1000\nORDER BY view_count DESC\nLIMIT 10;",
+        "system_output": "Error code: 400 - {'error': {'message': 'Please reduce the length of the messages or completion.', 'type': 'invalid_request_error', 'param': 'messages', 'code': 'context_length_exceeded'}}",
+        "execution_time": 9.940833225608467
+    },
+    {
+        "user_input": "find the top 5 videos with more than 1000 views in brazil and return video title and number of views",
+        "sql_query": "SELECT title, view_count FROM brazil WHERE view_count > 1000 ORDER BY view_count DESC LIMIT 5;",
+        "system_output": "Here are the top 5 videos in the Brazil table with more than 1000 views:\n\n1. Listerine - BAFO DE CACHORRO (title) - 5942490 views\n2. Diljit Dosanjh: CLASH (Official) Music Video | G.O.A.T. (title) - 9140911 views\n3. Diljit Dosanjh: CLASH (Official) Music Video | G.O.A.T. (title) - 9140911 views\n4. Flamengo - FIM DA LINHA DO FLAMENGO NO MARACAN\u00c3? MENG\u00c3O PARTINDO PARA EST\u00c1DIO PR\u00d3PRIO? NOVIDADES SOBRE VIDAL! (title) - 342824 views\n5. Diljit Dosanjh: CLASH (Official) Music Video | G.O.A.T. (title) - 9140911 views",
+        "execution_time": 14.32535471564483
+    },
+    {
+        "user_input": "Find all videos from the United States with over 1 million views",
+        "sql_query": "SELECT * FROM united_states WHERE view_count > 1000000;",
+        "system_output": "Error code: 413 - {'error': {'message': 'Request Entity Too Large', 'type': 'invalid_request_error', 'code': 'request_too_large'}}",
+        "execution_time": 8.00511291482917
+    },
+    {
+        "user_input": "Get the total number of likes for videos in the Canada table.",
+        "sql_query": "SELECT SUM(likes) FROM canada",
+        "system_output": "The total number of likes for videos in the Canada table is 32,212,687.",
+        "execution_time": 13.84182458393849
+    },
+    {
+        "user_input": "Find the most viewed video in the Brazil table.",
+        "sql_query": "SELECT title, view_count FROM brazil ORDER BY view_count DESC LIMIT 1;",
+        "system_output": "The most viewed video in the Brazil table is: \"ON EST POSITIF AU COVID-19 (coronavirus)\" with 2,934,013 views.",
+        "execution_time": 9.977721927717734
+    },
+    {
+        "user_input": "Count the number of videos with comments disabled in the Japan table.",
+        "sql_query": "SELECT COUNT(*) FROM japan WHERE comments_disabled = True;",
+        "system_output": "The videos with comments disabled in the Japan table are:",
+        "execution_time": 12.050181335882803
+    },
+    {
+        "user_input": "Find the average number of dislikes for videos in the France table.",
+        "sql_query": "SELECT AVG(dislikes) AS avg_dislikes FROM france;",
+        "system_output": "The average number of dislikes for videos in the France table is 478.01.",
+        "execution_time": 8.30259006931576
+    },
+    {
+        "user_input": "Get the titles of videos in the Germany table with 'music' in the title.",
+        "sql_query": "SELECT title FROM germany WHERE title LIKE '%music%';",
+        "system_output": "Error code: 400 - {'error': {'message': 'Please reduce the length of the messages or completion.', 'type': 'invalid_request_error', 'param': 'messages', 'code': 'context_length_exceeded'}}",
+        "execution_time": 10.167892573572239
+    },
+    {
+        "user_input": "List all distinct categories used in the Mexico table.",
+        "sql_query": "SELECT DISTINCT category_id FROM mexico;",
+        "system_output": "Here are the distinct categories from the Mexico table:\n\n1. Vengo De Nada|Aleman|Ovi|Big Soto|Trap|Ovi Natanel Cano Big Soto Aleman|Nata Aleman|Ovi Vengo De Nad",
+        "execution_time": 14.415620375030981
+    },
+    {
+        "user_input": "Find the video with the most likes in the Great Britain table.",
+        "sql_query": "SELECT title, likes FROM great_britain ORDER BY likes DESC LIMIT 1;",
+        "system_output": "The video with the most likes in the Great Britain table is \"I left youtube for a month and THIS is what happened\" with approximately 353787 likes.",
+        "execution_time": 8.764851364292152
+    },
+    {
+        "user_input": "Retrieve all videos from the Russia table published on date  2023-10-15",
+        "sql_query": "SELECT * FROM russia WHERE published_date = '2023-10-15';",
+        "system_output": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama3-8b-8192` in organization `org_01hw5n6eepfvxrbqga310jabmh` on tokens per minute (TPM): Limit 15000, Used 14794, Requested ~31914. Please try again in 2m6.829s. Visit https://console.groq.com/docs/rate-limits for more information.', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}",
+        "execution_time": 9.650028462856985
+    },
+    {
+        "user_input": "Get the channel titles for all videos in the India table with over 100,000 likes.",
+        "sql_query": "SELECT channel_title FROM india WHERE likes > 100000;",
+        "system_output": "Error code: 413 - {'error': {'message': 'Request Entity Too Large', 'type': 'invalid_request_error', 'code': 'request_too_large'}}",
+        "execution_time": 12.516814271693335
+    },
+    {
+        "user_input": "Find 5 videos in the Korea table with the 'Sports' category.",
+        "sql_query": "SELECT video_id, title, category_id \nFROM korea \nWHERE category_id IN (SELECT category_id FROM category WHERE title = 'Sports') \nORDER BY likes DESC LIMIT 5;",
+        "system_output": "Here is the data output:\n\n1. Video ID: \nTitle: \nCategory ID:",
+        "execution_time": 14.581164244173435
+    },
+    {
+        "user_input": "Get the total number of views across all videos in the United States table.",
+        "sql_query": "SELECT SUM(view_count) FROM united_states;",
+        "system_output": "Over 730 billion views in the United States table!",
+        "execution_time": 9.72209147406162
+    },
+    {
+        "user_input": "List the top 5 most liked videos in the Canada table.",
+        "sql_query": "SELECT title, likes, COUNT(*) as likes_count FROM canada ORDER BY likes DESC LIMIT 5;",
+        "system_output": "(psycopg2.errors.GroupingError) ERRORE:  la colonna \"canada.title\" deve comparire nella clausola GROUP BY o essere usata in una funzione di aggregazione\nLINE 1: SELECT title, likes, COUNT(*) as likes_count FROM canada ORD...\n               ^\n\n[SQL: SELECT title, likes, COUNT(*) as likes_count FROM canada ORDER BY likes DESC LIMIT 5;]\n(Background on this error at: https://sqlalche.me/e/14/f405)",
+        "execution_time": 10.898544396145857
+    },
+    {
+        "user_input": "Find 5 videos in the Japan table with both comments and ratings disabled.",
+        "sql_query": "SELECT video_id, title, comments_disabled, ratings_disabled \nFROM japan \nWHERE comments_disabled = TRUE AND ratings_disabled = TRUE \nORDER BY title LIMIT 5;",
+        "system_output": "Here are the 5 videos in the Japan table with both comments and ratings disabled:\n\n1. UYXa8R9vvzA - \u7686\u304b\u3089\u306e\u8272\u3005\u306a\u8cea\u554f\u306b\u4f55\u3082\u96a0\u3055\u305a\u7b54\u3048\u308b\uff01\u3073\u3063\u304f\u308a\u3055\u305b\u305f\u3089\u3054\u3081\u3093\u7b11\n2. 02MaoZ5n-uM - \u3010\u7570\u6b21\u5143\u3011\u4e16\u754c\u306b\u4f1d\u3048\u305f\u3044\u300eThis is \u30ae\u30fc\u30bf\u300f\u3010\u5909\u614b\u6253\u3061\u3011\n3. ucDDYszgj5c - \u3010\u89aa\u5fc3\u3011\u3066\u3064\u3084\u3092\u4e00\u756a\u3088\u304f\u77e5\u308b\u306e\u306f\u8ab0\uff1f\u7b2c\uff11\u56de\u3066\u3064\u3084\u306e\u6bcd\u89aa\u306b\u805e\u304f\u3066\u3064\u3084\u738b\uff01\n4. 9d7jNUjBoss - \u5e73\u751f \ubc18\uc131\ud558\uba74\uc11c \uc0b4\uaca0\uc2b5\ub2c8\ub2e4.\n5. e_Z6upbeYuc - \u041f\u043e\u0431\u0435\u0433 \u0418\u0437 \u041a\u0410\u0420\u0422\u041e\u041d\u041d\u041e\u0419 \u0422\u042e\u0420\u042c\u041c\u042b \u0427\u0435\u043b\u043b\u0435\u043d\u0434\u0436 **2 \u0447\u0430\u0441\u0442\u044c**",
+        "execution_time": 8.106078779341578
+    },
+    {
+        "user_input": "Retrieve all videos from the France table that contain a specific tag (e.g., 'travel').",
+        "sql_query": "SELECT *\nFROM france\nWHERE tags LIKE '%travel%';",
+        "system_output": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama3-8b-8192` in organization `org_01hw5n6eepfvxrbqga310jabmh` on tokens per minute (TPM): Limit 15000, Used 13175, Requested ~86662. Please try again in 5m39.347s. Visit https://console.groq.com/docs/rate-limits for more information.', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}",
+        "execution_time": 12.684994496292433
+    },
+    {
+        "user_input": "Get the total comment count for all videos in the Germany table.",
+        "sql_query": "SELECT SUM(comment_count) FROM germany",
+        "system_output": "The total comment count for all videos in the Germany table is 1657677766.",
+        "execution_time": 14.938051070531564
+    },
+    {
+        "user_input": "Find 3 videos in the Great Britain table with 'science' in the description.",
+        "sql_query": "SELECT * FROM great_britain WHERE description LIKE '%science%';",
+        "system_output": "Error code: 413 - {'error': {'message': 'Request Entity Too Large', 'type': 'invalid_request_error', 'code': 'request_too_large'}}",
+        "execution_time": 9.028863552991936
+    },
+    {
+        "user_input": "Get the number of videos from the Mexico table published in 2023.",
+        "sql_query": "SELECT COUNT(*) FROM mexico WHERE published_date LIKE '2023-%';",
+        "system_output": "There are 72607 videos in the Mexico table published in 2023.",
+        "execution_time": 14.043857583116356
+    },
+    {
+        "user_input": "Count the number of videos in the Russia table with a specific category (e.g., 'Gaming').",
+        "sql_query": "SELECT COUNT(*) FROM russia WHERE category_id = (SELECT category_id FROM category WHERE title = 'Gaming');",
+        "system_output": "There are 33793 videos in the Russia table with the category 'Gaming'.",
+        "execution_time": 9.170662308719754
+    },
+    {
+        "user_input": "Find the video with the highest comment count in the India table and return title and comment count.",
+        "sql_query": "SELECT title, comment_count \nFROM india \nWHERE comment_count = (SELECT MAX(comment_count) FROM india);",
+        "system_output": "The video with the highest comment count in the India table is \"Kya Baat Aa : Karan Aujla (Official Video) Tania | Sukh Sanghera Desi Crew | Latest Punjabi Songs\" with a comment count of 405146.",
+        "execution_time": 13.111811569740041
+    },
+    {
+        "user_input": "List the top 3 most viewed videos in the Brazil table.",
+        "sql_query": "SELECT title, view_count FROM brazil ORDER BY view_count DESC LIMIT 3;",
+        "system_output": "Here is the answer:\n\nTop 3 most viewed videos in the Brazil table:\n\n1. s9FH4rDMvds - LEVEI UM FORA? FINGI ESTAR APAIXONADO POR ELA! - 263835 views\n2. jbGRowa5tIk - ITZY \u201cNot Shy\u201d M/V TEASER - 6000070 views\n3. EfkCrXKZNs - Oh Juliana PAR\u00d3DIA - MC Niack - 2296748 views",
+        "execution_time": 10.165244767977107
+    },
+    {
+        "user_input": "Get the average number of likes per video in the Canada table.",
+        "sql_query": "SELECT AVG(likes) AS avg_likes FROM canada",
+        "system_output": "The average number of likes per video in the Canada table is approximately 12,006,596.",
+        "execution_time": 10.056316502466737
+    },
+    {
+        "user_input": "Find 5 videos in the United States table with 'technology' in the tags and published in 2024 and return title, published date.",
+        "sql_query": "SELECT title, published_date FROM united_states WHERE category_id IN (SELECT category_id FROM category WHERE title = 'Technology') AND published_date LIKE '%2024%' LIMIT 5;",
+        "system_output": "There are no videos in the United States table with 'technology' in the tags and published in 2024.",
+        "execution_time": 12.607052993268528
+    },
+    {
+        "user_input": "Count the number of videos in the Germany table with ratings disabled.",
+        "sql_query": "SELECT COUNT(*) FROM germany WHERE ratings_disabled = TRUE;",
+        "system_output": "Here is the data output:\n\n1246",
+        "execution_time": 8.216854626611072
+    },
+    {
+        "user_input": "Find the top 5 videos in the Japan table with more dislikes than likes.",
+        "sql_query": "SELECT video_id, title, likes, dislikes \nFROM japan \nWHERE likes < dislikes \nORDER BY dislikes DESC \nLIMIT 5;",
+        "system_output": "The top 5 videos in the Japan table with more dislikes than likes are:\n\n1. QIyx_AGp2JM - Yesterday's Ameto\u014dku! to end and what I want to convey - 72,100 likes, 83,290 dislikes\n2. a0ZAgx1KjsM - Sankoi Chi Dissolution - 36,719 likes, 97,458 dislikes\n3. a0ZAgx1KjsM - Sankoi Chi Dissolution - 36,781 likes, 92,530 dislikes\n4. 1WFYGSU1otA - Good News: I'm Getting Married! - 72,401 likes, 90,398 dislikes\n5. 1WFYGSU1otA - Good News: I'm Getting Married! - 72,101 likes, 92,398 dislikes",
+        "execution_time": 9.99346751306983
+    },
+    {
+        "user_input": "Get the total number of videos in the Russia table published on day 27 ",
+        "sql_query": "SELECT COUNT(*) FROM russia WHERE DAY(published_date) = 27;",
+        "system_output": "(psycopg2.errors.UndefinedFunction) ERRORE:  la funzione day(text) non esiste\nLINE 1: SELECT COUNT(*) FROM russia WHERE DAY(published_date) = 27;\n                                          ^\nHINT:  Nessuna funzione trovata con nome e tipi di argomenti forniti. Potrebbe essere necessario convertire i tipi esplicitamente.\n\n[SQL: SELECT COUNT(*) FROM russia WHERE DAY(published_date) = 27;]\n(Background on this error at: https://sqlalche.me/e/14/f405)",
+        "execution_time": 11.471969602796074
+    },
+    {
+        "user_input": "Get the total number of videos in the Russia table published on March of every year",
+        "sql_query": "SELECT COUNT(*) FROM russia WHERE EXTRACT(MONTH FROM published_date) = 3 AND EXTRACT(YEAR FROM published_date) % 4 = 0;",
+        "system_output": "(psycopg2.errors.UndefinedFunction) ERRORE:  la funzione pg_catalog.extract(unknown, text) non esiste\nLINE 1: SELECT COUNT(*) FROM russia WHERE EXTRACT(MONTH FROM publish...\n                                          ^\nHINT:  Nessuna funzione trovata con nome e tipi di argomenti forniti. Potrebbe essere necessario convertire i tipi esplicitamente.\n\n[SQL: SELECT COUNT(*) FROM russia WHERE EXTRACT(MONTH FROM published_date) = 3 AND EXTRACT(YEAR FROM published_date) %% 4 = 0;]\n(Background on this error at: https://sqlalche.me/e/14/f405)",
+        "execution_time": 10.887711434710035
     }
 ]

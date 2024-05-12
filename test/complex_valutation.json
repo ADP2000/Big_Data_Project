@@ -1,0 +1,92 @@
+[
+    {
+        "user_input": "Find the top 3 channels in the Canada table with the highest average view count per video, considering only channels with at least 50 videos.",
+        "sql_query": "SELECT channel_title, AVG(view_count) AS avg_view_count\nFROM canada\nGROUP BY channel_title\nHAVING COUNT(*) >= 50\nORDER BY avg_view_count DESC\nLIMIT 3;",
+        "system_output": "Here are the top 3 channels in the Canada table with the highest average view count per video, considering only channels with at least 50 videos:\n\n1. Tsuriki Show - 49,807,662 views\n2. MrBeast - 47,098,072 views\n3. YRF - 38,687,145 views",
+        "execution_time": 11.135166645050049
+    },
+    {
+        "user_input": "Find the channels in the France table with the highest growth rate in terms of total view count between 2022 and 2023, with attention for division by zero.",
+        "sql_query": "SELECT channel_title, \n       (view_count_2023 - view_count_2022) / view_count_2022 AS growth_rate\nFROM (\n  SELECT channel_title, \n         SUM(CASE WHEN EXTRACT(YEAR FROM published_date) = 2022 THEN view_count ELSE 0 END) AS view_count_2022,\n         SUM(CASE WHEN EXTRACT(YEAR FROM published_date) = 2023 THEN view_count ELSE 0 END) AS view_count_2023\n  FROM france\n  GROUP BY channel_title\n) AS temp_table\nORDER BY growth_rate DESC;",
+        "system_output": "(psycopg2.errors.UndefinedFunction) ERRORE:  la funzione pg_catalog.extract(unknown, text) non esiste\nLINE 5:          SUM(CASE WHEN EXTRACT(YEAR FROM published_date) = 2...\n                               ^\nHINT:  Nessuna funzione trovata con nome e tipi di argomenti forniti. Potrebbe essere necessario convertire i tipi esplicitamente.\n\n[SQL: SELECT channel_title, \n       (view_count_2023 - view_count_2022) / view_count_2022 AS growth_rate\nFROM (\n  SELECT channel_title, \n         SUM(CASE WHEN EXTRACT(YEAR FROM published_date) = 2022 THEN view_count ELSE 0 END) AS view_count_2022,\n         SUM(CASE WHEN EXTRACT(YEAR FROM published_date) = 2023 THEN view_count ELSE 0 END) AS view_count_2023\n  FROM france\n  GROUP BY channel_title\n) AS temp_table\nORDER BY growth_rate DESC;]\n(Background on this error at: https://sqlalche.me/e/14/f405)",
+        "execution_time": 8.39601445198059
+    },
+    {
+        "user_input": "Calculate the total number of videos and the average comment count per video for each category in the Germany table, considering only videos with ratings enabled.",
+        "sql_query": "SELECT category_id, COUNT(*) AS total_videos, AVG(comment_count) AS avg_comment_count\nFROM germany\nWHERE ratings_disabled = FALSE\nGROUP BY category_id;",
+        "system_output": "Here is the data output:\n\nCategory ID | Total Videos | Average Comments\n---------|-------------|-------------------\n1          | 4212        | 8717.0745\n2          | 10696       | 1338.7544\n10         | 42812       | 20372.3714\n15         | 888          | 1207.7545\n17         | 34330        | 1818.2364\n19         | 1998          | 2232.3173\n20         | 30729        | 5391.3279\n22         | 27532        | 3213.0705\n23         | 7594          | 3791.3288\n24         | 68845        | 4045.3480\n25         | 9492          | 2748.3048\n26         | 9182          | 1477.5260\n27         | 8052          | 3306.3431\n28         | 9784          | 3345.6356\n29         | 144           | 1309.2222",
+        "execution_time": 10.98680567741394
+    },
+    {
+        "user_input": "Find the video in the United States table with the highest engagement score, where engagement score is defined as the sum of likes, dislikes, and comments.",
+        "sql_query": "SELECT video_id, title, likes + dislikes + comment_count AS engagement_score\nFROM united_states\nORDER BY engagement_score DESC\nLIMIT 1;",
+        "system_output": "The video with the highest engagement score is:\n\nvideo_id: WMweEpGlu_U\ntitle: BTS (\ubc29\ud0c4\uc18c\ub144\ub2e8) 'Butter' Official MV",
+        "execution_time": 9.586761951446533
+    },
+    {
+        "user_input": "Find the top 5 categories in terms of average like-to-dislike ratio in the Great Britain table, considering only categories with at least 100 videos.",
+        "sql_query": "SELECT category_id, AVG(CASE WHEN dislikes = 0 THEN likes ELSE likes / dislikes END) AS avg_like_dislike_ratio, COUNT(*) AS num_videos\nFROM great_britain\nWHERE num_videos >= 100\nGROUP BY category_id\nORDER BY avg_like_dislike_ratio DESC\nLIMIT 5;",
+        "system_output": "(psycopg2.errors.UndefinedColumn) ERRORE:  la colonna \"num_videos\" non esiste\nLINE 3: WHERE num_videos >= 100\n              ^\n\n[SQL: SELECT category_id, AVG(CASE WHEN dislikes = 0 THEN likes ELSE likes / dislikes END) AS avg_like_dislike_ratio, COUNT(*) AS num_videos\nFROM great_britain\nWHERE num_videos >= 100\nGROUP BY category_id\nORDER BY avg_like_dislike_ratio DESC\nLIMIT 5;]\n(Background on this error at: https://sqlalche.me/e/14/f405)",
+        "execution_time": 7.847895860671997
+    },
+    {
+        "user_input": "Calculate the average view count per video for each channel in the Korea table, considering only channels with ratings enabled and more than 100 videos and return the top 5 channel with highest average view count.",
+        "sql_query": "SELECT channel_title, AVG(view_count) AS avg_view_count\nFROM korea\nWHERE ratings_disabled = FALSE\nAND view_count > 100\nGROUP BY channel_title\nORDER BY avg_view_count DESC\nLIMIT 5;",
+        "system_output": "According to the provided data, here are the top 5 channels with the highest average view count in the Korea table:\n\n1. **Rockstar Games**: 14,604,547.80\n2. **MrBeast**: 9,506,086.65\n3. **AdeleVEVO**: 8,368,165.08\n4. **Cardi B**: 7,978,174.00\n5. **BLACKPINK**: 4,362,033.24",
+        "execution_time": 15.526369571685791
+    },
+    {
+        "user_input": "Find the video in the Mexico table that have the highest engagement rate, where engagement rate is defined as the total engagement (likes + dislikes + comments) divided by the view count, with attention if view count is zero.",
+        "sql_query": "SELECT video_id, title, likes + dislikes + comment_count AS engagement, (likes + dislikes + comment_count) / view_count AS engagement_rate\nFROM mexico\nWHERE view_count != 0\nORDER BY engagement_rate DESC\nLIMIT 1;",
+        "system_output": "The video in the Mexico table with the highest engagement rate is \"Ni el profesor m\u00e1s inteligente podr\u00e1 resolver todos los 17 acertijos\" with the video ID \"1fhepBQkyrU\".",
+        "execution_time": 41.261574268341064
+    },
+    {
+        "user_input": "Find the top 5 channels in terms of total engagement (likes + dislikes + comments) in the Brazil table.",
+        "sql_query": "SELECT channel_id, SUM(likes + dislikes + comment_count) AS total_engagement\nFROM brazil\nGROUP BY channel_id\nORDER BY total_engagement DESC\nLIMIT 5;",
+        "system_output": "**Top 5 channels in Brazil in terms of total engagement:**\n\n1. **UC3IZKseVpdzPSBaWxBundA** - 2,257,397,069 engagements\n2. **UCOmHUn--16B90oW2L6FRR3A** - 1,325,718,117 engagements\n3. **UCLkAepWjdylmXSltofFvsYQ** - 1,134,768,690 engagements\n4. **UCX6OQ3DkcsbYNE6H8uQQuVA** - 1,104,569,069 engagements\n5. **UCaO6TYtlC8U5ttz62hTrZgg** - 719,733,545 engagements",
+        "execution_time": 29.346163034439087
+    },
+    {
+        "user_input": "Find the top 5 channels in the India table with the highest engagement score per video, where engagement score is defined as the sum of likes, dislikes, and comments, considering only channels with at least 50 videos.",
+        "sql_query": "SELECT channel_title, SUM(likes + dislikes + comment_count) AS engagement_score\nFROM india\nGROUP BY channel_title\nORDER BY engagement_score DESC\nLIMIT 5;",
+        "system_output": "The top 5 channels in the India table with the highest engagement score per video are:\n\n* Sourav Joshi Vlogs with an engagement score of 1,140,041,830\n* HYBE LABELS with an engagement score of 1,037,220,364\n* MrBeast with an engagement score of 955,328,925\n* BLACKPINK with an engagement score of 934,114,382\n* T-Series with an engagement score of 821,296,693",
+        "execution_time": 51.44807314872742
+    },
+    {
+        "user_input": "Find the top 5 categories in terms of total engagement (likes + dislikes + comments) per video in the Japan table.",
+        "sql_query": "SELECT category_id, SUM(likes + dislikes + comment_count) AS total_engagement\nFROM japan\nGROUP BY category_id\nORDER BY total_engagement DESC\nLIMIT 5;",
+        "system_output": "Here is the SQL query that answers the user's question:\n\n```\nSELECT category_id, SUM(likes + dislikes + comment_count) AS total_engagement, COUNT(*) as num_videos\nFROM japan\nGROUP BY category_id\nORDER BY total_engagement DESC\nLIMIT 5;\n```\n\nThe SQL query groups the data from the `japan` table by `category_id`, calculates the total engagement for each category (likes + dislikes + comments), and then sorts the results in descending order by total engagement. The `LIMIT 5` clause restricts the result to the top 5 categories.\n\nHere is the result:\n\n```\n[(10, Decimal('9724855524')), (24, Decimal('3781255277')), (20, Decimal('1033079967')), (22, Decimal('914052100')), (23, Decimal('483738630'))\n```\n\nThis indicates that the top 5 categories in terms of total engagement are:\n\n1. Category 10: 9724855524\n2. Category 24: 3781255277\n3. Category 20: 1033079967\n4. Category 22: 914052100\n5. Category 23: 483738630",
+        "execution_time": 89.50296401977539
+    },
+    {
+        "user_input": "Find the top 3 channels in the Mexico table with the highest growth rate in terms of total engagement (likes + dislikes + comments) between 2022 and 2024.",
+        "sql_query": "SELECT channel_id, \n       (likes + dislikes + comment_count) AS total_engagement, \n       (likes + dislikes + comment_count) - LAG(likes + dislikes + comment_count) OVER (ORDER BY channel_id) AS engagement_growth\nFROM mexico\nORDER BY engagement_growth DESC\nLIMIT 3;",
+        "system_output": "The top 3 channels in the Mexico table with the highest growth rate in terms of total engagement (likes + dislikes + comments) between 2022 and 2024 are:\n\n1. UC---lM1j0uNzsFxF0V2IZnw: 3137\n2. UC3IZKseVpdzPSBaWxBxundA: 22964599\n3. UC3IZKseVpdzPSBaWxBxundA: 23038235",
+        "execution_time": 31.415809154510498
+    },
+    {
+        "user_input": "Find the top 3 channels in the Brazil table with the highest average view count per video, considering only channels with at least 100 videos",
+        "sql_query": "SELECT channel_title, AVG(view_count) AS avg_view_count\nFROM brazil\nWHERE channel_title IN (\n  SELECT channel_title\n  FROM (\n    SELECT channel_title, COUNT(*) AS num_videos\n    FROM brazil\n    GROUP BY channel_title\n    HAVING COUNT(*) >= 100\n  ) AS temp_table\n  ORDER BY num_videos DESC\n  LIMIT 3\n) AS top_channels\nGROUP BY channel_title;",
+        "system_output": "(psycopg2.errors.SyntaxError) ERRORE:  errore di sintassi a o presso \"AS\"\nLINE 13: ) AS top_channels\n           ^\n\n[SQL: SELECT channel_title, AVG(view_count) AS avg_view_count\nFROM brazil\nWHERE channel_title IN (\n  SELECT channel_title\n  FROM (\n    SELECT channel_title, COUNT(*) AS num_videos\n    FROM brazil\n    GROUP BY channel_title\n    HAVING COUNT(*) >= 100\n  ) AS temp_table\n  ORDER BY num_videos DESC\n  LIMIT 3\n) AS top_channels\nGROUP BY channel_title;]\n(Background on this error at: https://sqlalche.me/e/14/f405)",
+        "execution_time": 8.974138259887695
+    },
+    {
+        "user_input": "Find the top 5 categories in terms of average engagement rate (likes + dislikes + comments per view) in the Japan table, with attention for division by zero.",
+        "sql_query": "SELECT category_id, AVG(CASE WHEN view_count = 0 THEN 0 ELSE (likes + dislikes + comment_count) / view_count END) AS avg_engagement_rate\nFROM japan\nGROUP BY category_id\nORDER BY avg_engagement_rate DESC\nLIMIT 5;",
+        "system_output": "The average engagement rate for the top 5 categories in Japan is:\n\n1. **category_id 2**: avg_engagement_rate 0.0\n2. **category_id 10**: avg_engagement_rate 0.0\n3. **category_id 15**: avg_engagement_rate 0.0\n4. **category_id 17**: avg_engagement_rate 0.0\n5. **category_id 1**: avg_engagement_rate 0.0",
+        "execution_time": 55.747023820877075
+    },
+    {
+        "user_input": "Find the top 3 channels in terms of total engagement (likes + dislikes + comments) per video in the Russia table.",
+        "sql_query": "SELECT channel_id, SUM(likes + dislikes + comment_count) AS total_engagement\nFROM russia\nGROUP BY channel_id\nORDER BY total_engagement DESC\nLIMIT 3;",
+        "system_output": "The top 3 channels in terms of total engagement (likes + dislikes + comments) per video in the Russia table are:\n\n1. UCa4 - 1,118,712,132\n2. UCX6OQ3DkcsbYNE6H8uQQuVA - 642,410,254\n3. UC2tsySbe9TNrI-xh2lximHA - 517,306,319",
+        "execution_time": 31.025588989257812
+    },
+    {
+        "user_input": "Find the top 3 channels in terms of average engagement rate (likes + dislikes + comments per view) in the France table, with attention for division by zero.",
+        "sql_query": "SELECT channel_title, AVG(CASE WHEN view_count = 0 THEN 0 ELSE (likes + dislikes + comment_count) / view_count END) AS avg_engagement_rate\nFROM france\nGROUP BY channel_title\nORDER BY avg_engagement_rate DESC\nLIMIT 3;",
+        "system_output": "Here is the output of the SQL query:\n\n```\nSQL Query: SELECT \n  channel_title, \n  AVG(COALESCE((likes + dislikes + comment_count), 0) / view_count) AS avg_engagement_rate\nFROM \n  france\nGROUP BY \n  channel_title\nORDER BY \n  avg_engagement_rate DESC\nLIMIT 3;\n```\n\nUser Response:\nThe top 3 channels with the highest average engagement rate in France are:\n\n1. Pauvert - TV78 - La cha\u00eene des Yvelines\n2. NBA Highlights\n3. 88rising",
+        "execution_time": 30.796890020370483
+    }
+]

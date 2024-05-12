@@ -1,0 +1,182 @@
+[
+    {
+        "user_input": "Get the average view count for videos in the Brazil table grouped by category.",
+        "sql_query": "SELECT category_id, AVG(view_count) AS avg_view_count\nFROM brazil\nGROUP BY category_id;",
+        "system_output": "Here is the natural language response:\n\nThe average view count for videos in the Brazil table, grouped by category, is as follows:\n\n- Category 1: 2,004,984 views\n- Category 2: 390,320 views\n- Category 10: 3,238,676 views\n- Category 15: 489,568 views\n- Category 17: 792,857 views\n- Category 19: 425,257 views\n- Category 20: 1,060,897 views\n- Category 22: 830,210 views\n- Category 23: 828,122 views\n- Category 24: 1,511,765 views\n- Category 25: 688,542 views\n- Category 26: 666,553 views\n- Category 27: 699,374 views\n- Category 28: 2,314,058 views\n- Category 29: 1,819,607 views",
+        "execution_time": 10.32965636253357
+    },
+    {
+        "user_input": "Find the video with the highest ratio of likes to dislikes in the Canada table.",
+        "sql_query": "SELECT title, likes, dislikes, CASE WHEN dislikes = 0 THEN NULL ELSE likes / dislikes END AS like_dislike_ratio FROM canada ORDER BY like_dislike_ratio DESC LIMIT 1;",
+        "system_output": "The video with the highest ratio of likes to dislikes in the Canada table is \"The Paris Hilton you never knew | This Is Paris (Official Trailer)\".",
+        "execution_time": 9.255213737487793
+    },
+    {
+        "user_input": "Retrieve the titles and view counts of the top 5 most viewed videos in the India table.",
+        "sql_query": "SELECT title, view_count FROM india ORDER BY view_count DESC LIMIT 5;",
+        "system_output": "Here is the natural language response:\n\nHere are the titles and view counts of the top 5 most viewed videos in the India table:\n\n1. **Iot0eF6EoNA - Sadak 2 | Official Trailer | Sanjay | Pooja | Alia | Aditya | Jisshu | Mahesh Bhatt |** - 9885899\n2. **x-KbnJ9fvJc - Kya Baat Aa : Karan Aujla (Official Video) Tania | Sukh Sanghera Desi Crew | Latest Punjabi Songs** - 11308046\n3. **KX06ksuS6Xo - Diljit Dosanjh: CLASH (Official) Music Video | G.O.A.T.** - 9140911\n4. **ucDDYszgj5c - \u3010\u89aa\u5fc3\u3011\u3066\u3064\u3084\u3092\u4e00\u756a\u3088\u304f\u77e5\u308b\u306e\u306f\u8ab0\uff1f\u7b2c\uff11\u56de\u3066\u3064\u3084\u306e\u6bcd\u89aa\u306b\u805e\u304f\u3066\u3064\u3084\u738b\uff01** - 1980557\n5. **SsWHMAhshPQ - Ovi x Natanael Cano x Aleman x Big Soto - Vengo De Nada [Official Video]** - 741028",
+        "execution_time": 9.046563148498535
+    },
+    {
+        "user_input": "Count the number of distinct channels in the Germany table.",
+        "sql_query": "SELECT COUNT(DISTINCT channel_id) FROM germany;",
+        "system_output": "The number of distinct channels in the Germany table is 7960.",
+        "execution_time": 9.824021816253662
+    },
+    {
+        "user_input": "Get the total number of likes and dislikes for videos in the Mexico table grouped by category.",
+        "sql_query": "SELECT category_id, SUM(likes) AS total_likes, SUM(dislikes) AS total_dislikes \nFROM mexico \nGROUP BY category_id;",
+        "system_output": "Here is the natural language output:\n\nThe total number of likes and dislikes for videos in the Mexico table, grouped by category, is as follows:\n\n* Category 1: 5,987,196 likes, 25,424 dislikes\n* Category 2: 12,937,524 likes, 88,842 dislikes\n* Category 10: 16,561,033 likes, 13,053,926 dislikes\n* Category 15: 62,468,47 likes, 36,355 dislikes\n* ... (and so on)",
+        "execution_time": 9.44395899772644
+    },
+    {
+        "user_input": "Find the number of videos in the United States table with titles containing the word 'tutorial' and view counts greater than 500,000.",
+        "sql_query": "SELECT COUNT(*) \nFROM united_states \nWHERE title LIKE '%tutorial%' AND view_count > 500000;",
+        "system_output": "There is no video in the United States table with title containing the word 'tutorial' and view count greater than 500,000.",
+        "execution_time": 8.685339212417603
+    },
+    {
+        "user_input": "Retrieve the titles and publication times of videos in the Russia table published on 2023-03-15, ordered by publication time.",
+        "sql_query": "SELECT title, published_time FROM russia WHERE published_date = '2023-03-15' ORDER BY published_time;",
+        "system_output": "Error code: 400 - {'error': {'message': 'Please reduce the length of the messages or completion.', 'type': 'invalid_request_error', 'param': 'messages', 'code': 'context_length_exceeded'}}",
+        "execution_time": 7.50284481048584
+    },
+    {
+        "user_input": "Retrieve  5 videos with titles and publication times in the Russia table published on 2024-03-15, ordered by publication time.",
+        "sql_query": "SELECT title, published_time FROM russia WHERE published_date = '2024-03-15' ORDER BY published_time LIMIT 5;",
+        "system_output": "Here is the natural language response:\n\nHere are the 5 videos with titles and publication times in the Russia table published on 2024-03-15, ordered by publication time:\n\n1. \u041f\u043e\u0431\u0435\u0433 \u0418\u0437 \u041a\u0410\u0420\u0422\u041e\u041d\u041d\u041e\u0419 \u0422\u042e\u0420\u042c\u041c\u042b \u0427\u0435\u043b\u043b\u0435\u043d\u0434\u0436 **2 \u0447\u0430\u0441\u0442\u044c** - published at 2020-08-12 09:00:16\n2. \u0420\u041e\u041b\u0415\u041a\u0421 (\u041f\u0440\u0435\u043c\u044c\u0435\u0440\u0430 \u043a\u043b\u0438\u043f\u0430 2020) - published at 2020-08-12 09:00:10\n3. \u041a\u0430\u043a \u042f \u0427\u0423\u0422\u042c \u041d\u0415 \u0423\u041c\u0415\u0420 2 (\u0430\u043d\u0438\u043c\u0430\u0446\u0438\u044f) - published at 2020-08-12 10:00:02",
+        "execution_time": 9.886046648025513
+    },
+    {
+        "user_input": "Retrieve 5 videos with titles and publication times in the Russia table published on 2024-03-15, ordered by publication time.",
+        "sql_query": "SELECT title, published_time FROM russia WHERE published_date = '2024-03-15' ORDER BY published_time LIMIT 5;",
+        "system_output": "Here is the response to the user's question:\n\n**Titles and Publication Times of 5 Videos in Russia Table Published on 2024-03-15**\n\n1. **\u041f\u043e\u0431\u0435\u0433 \u0418\u0437 \u041a\u0410\u0420\u0422\u041e\u041d\u041d\u041e\u0419 \u0422\u042e\u0420\u042c\u041c\u042b \u0427\u0435\u043b\u043b\u0435\u043d\u0434\u0436 **2 \u0447\u0430\u0441\u0442\u044c** - 09:00:16\n2. **DAVA & \u0424\u0438\u043b\u0438\u043f\u043f \u041a\u0438\u0440\u043a\u043e\u0440\u043e\u0432 \u2013 \u0420\u041e\u041b\u0415\u041a\u0421 (\u041f\u0440\u0435\u043c\u044c\u0435\u0440\u0430 \u043a\u043b\u0438\u043f\u0430 2020)** - 09:00:10\n3. **\u041a\u0430\u043a \u042f \u0427\u0423\u0422\u042c \u041d\u0415 \u0423\u041c\u0415\u0420 2 (\u0430\u043d\u0438\u043c\u0430\u0446\u0438\u044f)** - 10:00:02\n\n**Note:** The SQL query provided will not work as the Russia table does not contain data published on 2024-03-15. The provided data is from 2020. The query will return no results.",
+        "execution_time": 35.10854363441467
+    },
+    {
+        "user_input": "counts the videos in the France table with view counts between 100,000 and 500,000.",
+        "sql_query": "SELECT COUNT(*) \nFROM france \nWHERE view_count BETWEEN 100000 AND 500000;",
+        "system_output": "According to the view count of the videos in the France table, the number of videos with view counts between 100,000 and 500,000 is 123,420.",
+        "execution_time": 30.06730580329895
+    },
+    {
+        "user_input": "Count the number of videos in the Korea table with the same title as videos in the Japan table.",
+        "sql_query": "SELECT COUNT(*) \nFROM korea k \nWHERE EXISTS (\n  SELECT 1 \n  FROM japan j \n  WHERE j.title = k.title\n)",
+        "system_output": "According to the Korea table, there is no video with the same title as videos in the Japan table.",
+        "execution_time": 44.46574902534485
+    },
+    {
+        "user_input": "Count the number of videos in the Korea table with the same title as videos in the Japan table.",
+        "sql_query": "SELECT COUNT(*) FROM korea k INNER JOIN japan j ON k.title = j.title",
+        "system_output": "There are 107,981 videos in the Korea table with the same title as videos in the Japan table.",
+        "execution_time": 29.541754007339478
+    },
+    {
+        "user_input": "Counts the total view count in the India table published in 2024.",
+        "sql_query": "SELECT SUM(view_count) FROM india WHERE published_date LIKE '%2024%';",
+        "system_output": "The total view count in the India table published in 2024 is 32164605781.",
+        "execution_time": 29.366871118545532
+    },
+    {
+        "user_input": "Count the number of videos in the Brazil table with tags containing both 'funny' and 'cat'.",
+        "sql_query": "SELECT COUNT(*) FROM brazil WHERE tags LIKE '%funny%cat%'",
+        "system_output": "There is no data from Brazil table.",
+        "execution_time": 48.35102558135986
+    },
+    {
+        "user_input": "Retrieve 5  videos titles in the United States table with titles longer than 20 characters.",
+        "sql_query": "SELECT title \nFROM united_states \nWHERE LENGTH(title) > 20 \nORDER BY LENGTH(title) DESC \nLIMIT 5;",
+        "system_output": "Based on the provided table schema and SQL query, I will generate the SQL query to answer the user's question.\n\nHere is the SQL query:\n\n```sql\nSELECT title \nFROM united_states \nWHERE LENGTH(title) > 20 \nLIMIT 5;\n```\n\nLet me explain the query:\n\n* `SELECT title`: We are selecting the `title` column from the `united_states` table.\n* `FROM united_states`: We are selecting from the `united_states` table.\n* `WHERE LENGTH(title) > 20`: We are filtering the results to only include rows where the length of the `title` is greater than 20 characters.\n* `LIMIT 5`: We are limiting the results to the first 5 matching rows.\n\nThis query will return the 5 video titles in the `united_states` table with titles longer than 20 characters.",
+        "execution_time": 30.09465265274048
+    },
+    {
+        "user_input": "Counts videos in the Canada table where the dislike-to-like ratio is greater than 2.",
+        "sql_query": "SELECT COUNT(*) FROM canada WHERE dislikes > 2*likes;",
+        "system_output": "The video with the title \"FIFA 21 | Official Career Mode Trailer\" has been viewed 1660811 times.",
+        "execution_time": 80.98639488220215
+    },
+    {
+        "user_input": "Find the top 3 channels in the Canada table with the highest total view count.",
+        "sql_query": "SELECT channel_title, SUM(view_count) AS total_views\nFROM canada\nGROUP BY channel_title\nORDER BY total_views DESC\nLIMIT 3;",
+        "system_output": "Here is the SQL query:\n\nSELECT channel_title, SUM(view_count) AS total_views\nFROM canada\nGROUP BY channel_title\nORDER BY total_views DESC\nLIMIT 3;",
+        "execution_time": 28.71012854576111
+    },
+    {
+        "user_input": "Calculate the total number of likes and dislikes per category in the France table.",
+        "sql_query": "SELECT category_id, SUM(likes) AS total_likes, SUM(dislikes) AS total_dislikes \nFROM france \nGROUP BY category_id;",
+        "system_output": "Here is the SQL query and the response:\n\n**SQL Query:**\n```\nSELECT category_id, SUM(likes) AS total_likes, SUM(dislikes) AS total_dislikes \nFROM france \nGROUP BY category_id;\n```\n\n**SQL Response:**\n```\n[(1, Decimal('230286255'), Decimal('829205')), \n (2, Decimal('182737856'), Decimal('569380')), \n (10, Decimal('8191339240'), Decimal('73099113')), \n (15, Decimal('4256653'), Decimal('25838')), \n (17, Decimal('541177105'), Decimal('5443591')), \n (19, Decimal('42634236'), Decimal('86163')), \n (20, Decimal('1242989240'), Decimal('8366346')), \n (22, Decimal('661852001'), Decimal('5186033')), \n (23, Decimal('1210460733'), Decimal('6989721')), \n (24, Decimal('4308731616'), Decimal('20474976')), \n (25, Decimal('54944265'), Decimal('1939871')), \n (26, Decimal('166621524'), Decimal('1138714')), \n (27, Decimal('107693104'), Decimal('658773')), \n (28, Decimal('246844541'), Decimal('3086973')), \n (29, Decimal('3419176'), Decimal('15221'))\n```\n\nNote that the `category_id` is used to group the results, and the `SUM` function is used to calculate the total number of likes and dislikes for each category.",
+        "execution_time": 61.613054037094116
+    },
+    {
+        "user_input": "Find the percentage of videos in the Germany table with comments disabled.",
+        "sql_query": "SELECT COUNT(*) * 100.0 / (SELECT COUNT(*) FROM germany) AS percentage\nFROM germany\nWHERE comments_disabled = TRUE;",
+        "system_output": "Based on the provided data, I found that 1.56% of the videos in the Germany table have comments disabled.",
+        "execution_time": 28.996342420578003
+    },
+    {
+        "user_input": "Find the top 5 most common tags in the Japan table.",
+        "sql_query": "SELECT tag, COUNT(*) as frequency FROM (\n  SELECT SPLIT_PART(tags, '|', 1) as tag \n  FROM japan\n) AS tag_list \nGROUP BY tag \nORDER BY frequency DESC \nLIMIT 5;",
+        "system_output": "The top 5 most common tags in the Japan table are:\n\n1. [None] - 59958 times\n2. \u30b2\u30fc\u30e0 - 2452 times\n3. \u30dd\u30b1\u30e2\u30f3 - 2097 times\n4. \u30db\u30ed\u30e9\u30a4\u30d6 - 1935 times\n5. Fischer's - 1643 times",
+        "execution_time": 28.579792737960815
+    },
+    {
+        "user_input": "Calculate the total number of videos and the average comment count per video for each channel in the Russia table and return the top 5 ordered by number of videos",
+        "sql_query": "SELECT channel_title, COUNT(*) as num_videos, AVG(comment_count) as avg_comments\nFROM russia\nGROUP BY channel_title\nORDER BY num_videos DESC\nLIMIT 5;",
+        "system_output": "Here is the natural language response:\n\nThe top 5 channels in the Russia table, ordered by the number of videos, are:\n\n* A4 (1761 videos, 52691.52 average comments per video)\n* \u0422\u0435\u043b\u0435\u043a\u0430\u043d\u0430\u043b \u0414\u043e\u0436\u0434\u044c (1619 videos, 2814.60 average comments per video)\n* \u041c\u0430\u0442\u0447 \u0422\u0412 (1484 videos, 1224.77 average comments per video)\n* EdisonPts (1366 videos, 8737.43 average comments per video)\n* MrLololoshka (\u0420\u043e\u043c\u0430\u043d \u0424\u0438\u043b\u044c\u0447\u0435\u043d\u043a\u043e\u0432) (1241 videos, 4653.07 average comments per video)",
+        "execution_time": 29.530027151107788
+    },
+    {
+        "user_input": "Find the average like-to-dislike ratio for videos in the Great Britain table, with attention if dislike are zero.",
+        "sql_query": "SELECT AVG(CASE WHEN dislikes = 0 THEN 0 ELSE likes / dislikes END) AS avg_like_dislike_ratio \nFROM great_britain;",
+        "system_output": "The average like-to-dislike ratio for videos in the Great Britain table is approximately 31.97.",
+        "execution_time": 41.67634725570679
+    },
+    {
+        "user_input": "Find the channel with the highest average view count per video in the United States table.",
+        "sql_query": "SELECT channel_title, AVG(view_count) AS avg_views FROM united_states GROUP BY channel_title ORDER BY avg_views DESC LIMIT 1;",
+        "system_output": "The channel with the highest average view count per video in the United States table is \"Discord\" with an average of 493,577,321 views.",
+        "execution_time": 28.92602515220642
+    },
+    {
+        "user_input": "Find the top 5 most active channels in terms of video uploads in the Great Britain table.",
+        "sql_query": "SELECT channel_title, COUNT(*) as num_videos\nFROM great_britain\nGROUP BY channel_title\nORDER BY num_videos DESC\nLIMIT 5;",
+        "system_output": "Based on the data provided, the top 5 most active channels in terms of video uploads in the Great Britain table are:\n\n| Channel Title | Number of Videos |\n| --- | --- |\n| The United Stand | 2733 |\n| Sky Sports Football | 2111 |\n| BT Sport | 1603 |\n| MoreSidemen | 1321 |\n| FORMULA 1 | 1303 |\n\nPlease note that the actual numbers may vary depending on the specific data provided.",
+        "execution_time": 56.48327279090881
+    },
+    {
+        "user_input": "Find the percentage of videos in the Russia table with ratings is disabled.",
+        "sql_query": "SELECT COUNT(*) * 100.0 / (SELECT COUNT(*) FROM russia) AS percentage\nFROM russia\nWHERE ratings_disabled = TRUE;",
+        "system_output": "The percentage of videos in the Russia table with ratings disabled is approximately 90.4%.",
+        "execution_time": 28.7994225025177
+    },
+    {
+        "user_input": "Find the channel with the highest total view count in the Korea table.",
+        "sql_query": "SELECT channel_title, SUM(view_count) as total_views FROM korea GROUP BY channel_title ORDER BY total_views DESC LIMIT 1;",
+        "system_output": "The channel with the highest total view count in the Korea table is MrBeast, with a total view count of 38,024,362,061.",
+        "execution_time": 52.40939784049988
+    },
+    {
+        "user_input": "Calculate the total number of videos and the average comment count per video for each channel in the United States table, but only for channels with at least 1000 videos.",
+        "sql_query": "SELECT channel_title, COUNT(*) as num_videos, AVG(comment_count) as avg_comments\nFROM united_states\nWHERE channel_title IN (\n  SELECT channel_title\n  FROM (\n    SELECT channel_title, COUNT(*) as num_videos\n    FROM united_states\n    GROUP BY channel_title\n    HAVING COUNT(*) >= 1000\n  ) AS large_channels\n)\nGROUP BY channel_title;",
+        "system_output": "Here is the SQL query to answer the question:\n\n```sql\nSELECT channel_title, COUNT(*) as num_videos, AVG(comment_count) as avg_comments\nFROM united_states\nWHERE channel_title IN (\n  SELECT channel_title\n  FROM united_states\n  GROUP BY channel_title\n  HAVING COUNT(*) >= 1000\n)\nGROUP BY channel_title;\n```",
+        "execution_time": 30.113007307052612
+    },
+    {
+        "user_input": "Find the top 3 categories in terms of total view count in the France table.",
+        "sql_query": "SELECT category_id, SUM(view_count) AS total_view_count\nFROM france\nGROUP BY category_id\nORDER BY total_view_count DESC\nLIMIT 3;",
+        "system_output": "Here is the SQL query and output:\n\nSQL Query: <SQL>SELECT category_id, SUM(view_count) AS total_view_count\nFROM france\nGROUP BY category_id\nORDER BY total_view_count DESC\nLIMIT 3;</SQL>\n\nSQL Response: [(10, 119799546169), (24, 68564735537), (17, 23057337501)]",
+        "execution_time": 66.30585980415344
+    },
+    {
+        "user_input": "Find the top 3 channels with the highest total like count in the Great Britain table.",
+        "sql_query": "SELECT channel_title, SUM(likes) AS total_likes\nFROM great_britain\nGROUP BY channel_title\nORDER BY total_likes DESC\nLIMIT 3;",
+        "system_output": "The top 3 channels with the highest total like count in the Great Britain table are:\n\n1. MrBeast - 1,744,534,337\n2. HYBE LABELS - 1,044,778,669\n3. BLACKPINK - 846,575,043",
+        "execution_time": 29.11396360397339
+    },
+    {
+        "user_input": "Calculate the total number of videos and the average view count per video for each category in the Russia table, but only for categories with more than 50 videos.",
+        "sql_query": "SELECT \n  category_id, \n  COUNT(*) AS total_videos, \n  AVG(view_count) AS avg_view_count\nFROM \n  russia\nGROUP BY \n  category_id\nHAVING \n  COUNT(*) > 50;",
+        "system_output": "The total number of videos and the average view count per video for each category in the Russia table, but only for categories with more than 50 videos are:\n\n| category_id | total_videos | avg_view_count |\n| --- | --- | --- |\n| 1 | 14992 | 634702.074106189968 |\n| 2 | 12809 | 490908.329611991568 |\n| 22 | 42357 | 680592.567887244139 |\n| 24 | 37753 | 1655230.874473551771 |\n| 20 | 33793 | 588795.824105583997 |\n| 25 | 28927 | 594920.060566252982 |\n| 26 | 5474 | 1014084.808732188528 |\n| 27 | 2033 | 374054.312346286276 |\n| 28 | 5696 | 694399.235779494382 |\n| 29 | 3544 | 659101.987584650113 |\n\nNote that the categories with less than 50 videos are not included in the result.",
+        "execution_time": 65.15958714485168
+    }
+]
