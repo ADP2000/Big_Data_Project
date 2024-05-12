@@ -1,7 +1,7 @@
 import json
 import os
 
-def append_to_json(user_input, sql_query, system_output, file_path):
+def append_to_json(user_input, sql_query, system_output, execution_time, file_path):
     if os.path.exists(file_path):
         with open(file_path, "r") as file:
             data = json.load(file)
@@ -12,6 +12,7 @@ def append_to_json(user_input, sql_query, system_output, file_path):
         "user_input": user_input,
         "sql_query": sql_query,
         "system_output": system_output,
+        "execution_time": execution_time
     }
 
     data.append(new_entry)
