@@ -10,15 +10,16 @@ from langchain_community.utilities import SQLDatabase
 from langchain_core.output_parsers import StrOutputParser
 from langchain_groq import ChatGroq
 from valutation import append_to_json
-import pandas as pd
-import time
 
 
 load_dotenv()
 
-db = SQLDatabase.from_uri("postgresql+psycopg2://postgres:postgres@localhost/youTubeDataset")
+URI = "postgresql+psycopg2://postgres:postgres@localhost/youTubeDataset"
+db = SQLDatabase.from_uri(URI)
 
 # file_path = "./test/complex_valutation.json"
+
+# def create_views_for_query(uri,)
 
 def get_database_info(db):
   template = """
@@ -45,20 +46,7 @@ def get_database_info(db):
     | llm
     | StrOutputParser()
   )
-
-# def get_database_info():
-#     data = {
-#     "attribute": ["video_id", "title", "channel_id", "channel_title", "category_id", "tags", 
-#                   "view_count", "likes", "dislikes", "comment_count", "thumbnail_link", 
-#                   "comments_disabled", "ratings_disabled", "description", "published_date", 
-#                   "published_time"],
-#     "type": ["TEXT", "TEXT", "TEXT", "TEXT", "BIGINT", "TEXT", "BIGINT", "BIGINT", 
-#              "BIGINT", "BIGINT", "TEXT", "BOOLEAN", "BOOLEAN", "TEXT", "TEXT", "TEXT"]
-#     }
-
-#     df = pd.DataFrame(data)
-    
-
+   
 
 def get_sql_chain(db):
   template = """
@@ -79,15 +67,15 @@ def get_sql_chain(db):
     Question: Mi calcoli la media dei like e delle visualizzazioni per canale in Francia?
     SQL Query: SELECT channel_title, AVG(likes) AS avg_likes, AVG(view_count) AS avg_views FROM france GROUP BY channel_title;
     Question: Mi trovi i 5 video con più like in united states che sono della categoria Animation, restituendo id del video e id del canale?
-    SQL Query: SELECT video_id, channel_id FROM united_states \WHERE category_id = (SELECT category_id FROM category WHERE title = 'Animation') ORDER BY likes DESC LIMIT 5;
+    SQL Query: SELECT video_id, channel_id FROM united_states \nWHERE category_id = (SELECT category_id FROM category WHERE title = 'Animation') ORDER BY likes DESC LIMIT 5;
     Question: Trova i video pubblicati nel 2020 in brasile?
     SQL Query: SELECT 'brazil' AS source, title, published_date FROM brazil WHERE published_date BETWEEN '2020-01-01' AND '2020-12-31';
     Question: Trova i video pubblicati nel 2020 in brasile e tra le 17 e le 19?
     SQL Query: SELECT 'brazil' AS source, title, published_date FROM brazil WHERE published_date BETWEEN '2020-01-01' AND '2020-12-31' AND published_time BETWEEN '17:00:00' AND '19:00:00';
     Question: mi trovi la published_data in cui si è registrato il maggior numero di visualizzazioni tra marzo 2021 e agosto 2022 in canada, restituendo data di publicazione e numero di visualizzazioni?
     SQL Query: SELECT published_date, view_count FROM canada WHERE published_date BETWEEN '2021-03-01' AND '2022-08-31' ORDER BY view_count DESC LIMIT 1;
-    Question: mi calcoli il numero di video totali nelle tabelle?
-    SQL Query: SELECT SUM(num_videos) from (SELECT COUNT(*) as num_videos FROM brazil
+    Question: count the average number of videos for each tables on database.
+    SQL Query: SELECT AVG(num_videos) from (SELECT COUNT(*) as num_videos FROM brazil
                 UNION ALL SELECT COUNT(*) FROM canada
                 UNION ALL SELECT COUNT(*) FROM korea
                 UNION ALL SELECT COUNT(*) FROM france
@@ -140,7 +128,7 @@ def get_response(user_query: str, db: SQLDatabase, content):
   
     prompt = ChatPromptTemplate.from_template(template)
     
-    llm = ChatGroq(model="llama3-8b-8192", temperature=0.75, max_tokens=6000)
+    llm = ChatGroq(model="llama3-8b-8192", temperature=0.75)
     # content = sql_chain.invoke({"question": user_query}).content
     
     chain = (
@@ -161,7 +149,16 @@ def get_response(user_query: str, db: SQLDatabase, content):
 
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = [
-      AIMessage(content="Hello! I'm a SQL assistant. Ask me anything about database."),
+      AIMessage(
+        content="""
+        Hello! I'm a SQL assistant.\n
+        The dataset represents trending YouTube videos in various countries. It contains separate tables for this 
+        country (Brazil, Canada, France, Germany, Great Britain, India, Japan, Korea, and Mexico), each with detailed 
+        information on trending videos in that country. Each table includes fields such as video ID, title, 
+        publication date, channel ID, channel title, category ID, trending date, tags, view count, likes, dislikes, 
+        comment count, thumbnail link, whether comments are disabled, whether ratings are disabled, and video description. 
+        There is also a category table that maps category IDs to their titles.\n
+        Ask me anything about database."""),
     ]
 
 # st.set_page_config(page_title="Query Augmented Generation", page_icon="speech_balloon:", layout="centered")
@@ -175,8 +172,8 @@ st.set_page_config(
 col1, col2 = st.columns([8, 1])
 with col1:
     st.title("Query Augmented Generation")
-with col2:
-    st.image("llm.jpg")
+# with col2:
+#    st.image("llm.jpg")
 
 # st.title("Query Augmented Generation")
 
@@ -184,6 +181,8 @@ with st.expander("Write this sentences if you want more information...", expande
     st.write(
         """
         - What table and his attributes there are in this database?
+        - Count the average number of videos for each tables on database.
+        - Count the number of videos on database.
     """
     )
 
@@ -204,7 +203,7 @@ if user_query is not None and user_query.strip() != "":
     if user_query == "stop":
         st.stop()
 
-    elif user_query == "What table and his attributes there are in this database?":
+    elif user_query.startswith("What table and his attributes"):
         with st.chat_message("Human"):
             st.markdown(user_query)
             llm = get_database_info(db=db)
@@ -227,7 +226,7 @@ if user_query is not None and user_query.strip() != "":
                 st.markdown(response)
 
             except Exception as exception:
-                response = str(exception)
+                response = "Request too large."
                 st.markdown(response)
                 # if exception.__class__ is APIStatusError:
                 #     response = "Request is very large. Please add any attributes."
