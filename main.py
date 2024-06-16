@@ -10,6 +10,8 @@ from langchain_community.utilities import SQLDatabase
 from langchain_core.output_parsers import StrOutputParser
 from langchain_groq import ChatGroq
 from valutation import append_to_json
+from pyspark.sql import SparkSession
+import time
 
 
 load_dotenv()
@@ -17,9 +19,58 @@ load_dotenv()
 URI = "postgresql+psycopg2://postgres:postgres@localhost/youTubeDataset"
 db = SQLDatabase.from_uri(URI)
 
-# file_path = "./test/complex_valutation.json"
+# file_path = "./times/execution_time_complex.json"
 
-# def create_views_for_query(uri,)
+def execute_query_and_get_rows_as_tuple_string(query, spark):
+    # Eseguire la query e ottenere il DataFrame
+    df = spark.sql(query)
+    
+    # Raccogliere i dati dal DataFrame
+    result = df.collect()
+    
+    # Ottenere i nomi delle colonne del DataFrame
+    columns = df.columns
+    
+    # Convertire ogni riga in una tupla
+    rows_as_tuples = [tuple(row[col] for col in columns) for row in result]
+    
+    # Convertire la lista di tuple in una stringa
+    result_str = str(rows_as_tuples)
+    
+    return result_str
+
+def create_views_for_query(uri, spark):
+  jdbc_url = "jdbc:postgresql://localhost:5432/youTubeDataset"
+  properties = {
+      "user": "postgres",
+      "password": "postgres",
+      "driver": "org.postgresql.Driver"
+  }
+
+  conn = psycopg2.connect(
+    dbname="youTubeDataset",
+    user="postgres",
+    password="postgres",
+    host="localhost",
+    port="5432"
+  )
+  cursor = conn.cursor()
+  cursor.execute("""
+      SELECT table_name 
+      FROM information_schema.tables 
+      WHERE table_schema = 'public'
+  """)
+  tables = cursor.fetchall()
+  conn.close()
+
+  dataframes = {}
+  for (table_name,) in tables:
+    df = spark.read.jdbc(url=jdbc_url, table=table_name, properties=properties)
+    dataframes[table_name] = df
+
+  for table_name, df in dataframes.items():
+      df.createOrReplaceTempView(table_name)
+
 
 def get_database_info(db):
   template = """
@@ -113,7 +164,7 @@ def get_sql_chain(db):
     | StrOutputParser()
   )
 
-def get_response(user_query: str, db: SQLDatabase, content):
+def get_response(user_query: str, db: SQLDatabase, content, spark):
     sql_chain = get_sql_chain(db)
 
     template = """
@@ -130,12 +181,14 @@ def get_response(user_query: str, db: SQLDatabase, content):
     
     llm = ChatGroq(model="llama3-8b-8192", temperature=0.75)
     # content = sql_chain.invoke({"question": user_query}).content
+
     
     chain = (
         RunnablePassthrough.assign(query=sql_chain).assign(
         # query=lambda _: content,
         schema=lambda _: db.get_table_info(),
-        response=lambda _: db.run(content),
+        # response=lambda _: db.run(content),
+        response = lambda _: execute_query_and_get_rows_as_tuple_string(content, spark)
         )
         | prompt
         | llm
@@ -146,6 +199,19 @@ def get_response(user_query: str, db: SQLDatabase, content):
         "question": user_query,
         # "chat_history": chat_history,
     })
+
+
+
+spark = SparkSession.builder \
+    .appName("PostgreSQL with Spark") \
+    .config("spark.jars", "./dependencies/postgresql-42.7.3.jar") \
+    .getOrCreate()
+
+create_views_for_query(URI, spark)
+
+###################
+### STREAMLIT #####
+###################
 
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = [
@@ -201,6 +267,7 @@ if user_query is not None and user_query.strip() != "":
     st.session_state.chat_history.append(HumanMessage(content=user_query))
     
     if user_query == "stop":
+        spark.stop()
         st.stop()
 
     elif user_query.startswith("What table and his attributes"):
@@ -221,7 +288,7 @@ if user_query is not None and user_query.strip() != "":
             
         with st.chat_message("AI"):
             try:
-                response = get_response(user_query, db, content)
+                response = get_response(user_query, db, content, spark)
                 print(response)
                 st.markdown(response)
 
