@@ -19,11 +19,3 @@ def append_to_json(user_input, sql_query, system_output, execution_time, file_pa
 
     with open(file_path, "w") as file:
         json.dump(data, file, indent=4)  # indent per leggibilità
-
-# Esempio di utilizzo
-# append_to_json(
-#     user_input="Qual è la capitale dell'Italia?",
-#     sql_query="SELECT * FROM capitals WHERE country = 'Italy'",
-#     system_output="La capitale dell'Italia è Roma.",
-#     file_path="./test/valutation",
-# )
