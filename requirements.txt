@@ -1,6 +1,7 @@
 streamlit
-psycopg2
+psycopg2-binary
 python-dotenv
-langchain-core
 langchain-community
-langchain-groq
+langchain-core
+pyspark
+groq
