@@ -11,48 +11,49 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_groq import ChatGroq
 from valutation import append_to_json
 from pyspark.sql import SparkSession
-import time
+import os
 
 
 load_dotenv()
 
-URI = "postgresql+psycopg2://postgres:postgres@localhost/youTubeDataset"
+DB_NAME = os.getenv("DB_NAME")
+DB_USER = os.getenv("DB_USER")
+DB_PASSWORD = os.getenv("DB_PASSWORD")
+DB_HOST = os.getenv("DB_HOST")
+DB_PORT = os.getenv("DB_PORT")
+
+URI = f"postgresql+psycopg2://{DB_USER}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME}"
 db = SQLDatabase.from_uri(URI)
 
 # file_path = "./times/execution_time_complex.json"
 
 def execute_query_and_get_rows_as_tuple_string(query, spark):
-    # Eseguire la query e ottenere il DataFrame
     df = spark.sql(query)
     
-    # Raccogliere i dati dal DataFrame
     result = df.collect()
     
-    # Ottenere i nomi delle colonne del DataFrame
     columns = df.columns
     
-    # Convertire ogni riga in una tupla
     rows_as_tuples = [tuple(row[col] for col in columns) for row in result]
     
-    # Convertire la lista di tuple in una stringa
     result_str = str(rows_as_tuples)
     
     return result_str
 
-def create_views_for_query(uri, spark):
-  jdbc_url = "jdbc:postgresql://localhost:5432/youTubeDataset"
+def create_views_for_query(spark):
+  jdbc_url = f"jdbc:postgresql://{DB_HOST}:{DB_PORT}/{DB_NAME}"
   properties = {
-      "user": "postgres",
-      "password": "postgres",
+      "user": DB_USER,
+      "password": DB_PASSWORD,
       "driver": "org.postgresql.Driver"
   }
 
   conn = psycopg2.connect(
-    dbname="youTubeDataset",
-    user="postgres",
-    password="postgres",
-    host="localhost",
-    port="5432"
+      dbname=DB_NAME,
+      user=DB_USER,
+      password=DB_PASSWORD,
+      host=DB_HOST,
+      port=DB_PORT
   )
   cursor = conn.cursor()
   cursor.execute("""
@@ -74,14 +75,13 @@ def create_views_for_query(uri, spark):
 
 def get_database_info(db):
   template = """
-    You are information assistant. 
-    Based on the table schema below, write an answer that describe the attributes and the name of each table in database.
-    
+    Hello! I'm an information assistant.
+
+    The dataset represents [Brief Description of the Database]. Here is a detailed overview of the tables and their attributes in the database:
+
     <SCHEMA>{schema}</SCHEMA>
-        
-    Your turn:
-    
-    Question: {question}
+
+    Feel free to ask me anything about the database.
     """
     
   prompt = ChatPromptTemplate.from_template(template)
@@ -108,41 +108,6 @@ def get_sql_chain(db):
         
     Write only the SQL query and nothing else. Do not wrap the SQL query in any other text, not even backticks.
     
-    For example:
-    Question: How many different video_id there are in table named brazil?
-    SQL Query: SELECT COUNT(DISTINCT video_id) FROM brazil;
-    Question: How many video there are for each cannel_title in table india?
-    SQL Query: SELECT channel_title, count(*) as num_video FROM india GROUP BY channel_title
-    Question: Mi calcoli il rapporto "like" vs "dislike" per ciascun video in Brasile?
-    SQL Query: SELECT title, likes, dislikes, CASE WHEN dislikes = 0 THEN NULL ELSE likes / dislikes END AS like_dislike_ratio FROM brazil ORDER BY like_dislike_ratio DESC;
-    Question: Mi calcoli la media dei like e delle visualizzazioni per canale in Francia?
-    SQL Query: SELECT channel_title, AVG(likes) AS avg_likes, AVG(view_count) AS avg_views FROM france GROUP BY channel_title;
-    Question: Mi trovi i 5 video con più like in united states che sono della categoria Animation, restituendo id del video e id del canale?
-    SQL Query: SELECT video_id, channel_id FROM united_states \nWHERE category_id = (SELECT category_id FROM category WHERE title = 'Animation') ORDER BY likes DESC LIMIT 5;
-    Question: Trova i video pubblicati nel 2020 in brasile?
-    SQL Query: SELECT 'brazil' AS source, title, published_date FROM brazil WHERE published_date BETWEEN '2020-01-01' AND '2020-12-31';
-    Question: Trova i video pubblicati nel 2020 in brasile e tra le 17 e le 19?
-    SQL Query: SELECT 'brazil' AS source, title, published_date FROM brazil WHERE published_date BETWEEN '2020-01-01' AND '2020-12-31' AND published_time BETWEEN '17:00:00' AND '19:00:00';
-    Question: mi trovi la published_data in cui si è registrato il maggior numero di visualizzazioni tra marzo 2021 e agosto 2022 in canada, restituendo data di publicazione e numero di visualizzazioni?
-    SQL Query: SELECT published_date, view_count FROM canada WHERE published_date BETWEEN '2021-03-01' AND '2022-08-31' ORDER BY view_count DESC LIMIT 1;
-    Question: count the average number of videos for each tables on database.
-    SQL Query: SELECT AVG(num_videos) from (SELECT COUNT(*) as num_videos FROM brazil
-                UNION ALL SELECT COUNT(*) FROM canada
-                UNION ALL SELECT COUNT(*) FROM korea
-                UNION ALL SELECT COUNT(*) FROM france
-                UNION ALL SELECT COUNT(*) FROM germany
-                UNION ALL SELECT COUNT(*) FROM great_britain
-                UNION ALL SELECT COUNT(*) FROM india
-                UNION ALL SELECT COUNT(*) FROM japan
-                UNION ALL SELECT COUNT(*) FROM mexico
-                UNION ALL SELECT COUNT(*) FROM russia
-                UNION ALL SELECT COUNT(*) FROM united_states)
-    Question: compute the number of video in table mexico with comment disabled?
-    SQL Query: SELECT COUNT(*) FROM mexico WHERE comments_disabled = TRUE;
-    Question: Count the number of videos in the Korea table with the same title as videos in the Japan table.
-    SQL Query: SELECT COUNT(*) FROM korea k INNER JOIN japan j ON k.title = j.title;
-    
-
     Your turn:
     
     Question: {question}
@@ -151,7 +116,6 @@ def get_sql_chain(db):
     
   prompt = ChatPromptTemplate.from_template(template)
   
-  # llm = Ollama(model='llama3')
   llm = ChatGroq(model="llama3-8b-8192", temperature=0.5)
   
   def get_schema(_):
@@ -197,7 +161,6 @@ def get_response(user_query: str, db: SQLDatabase, content, spark):
     
     return chain.invoke({
         "question": user_query,
-        # "chat_history": chat_history,
     })
 
 
@@ -218,16 +181,10 @@ if "chat_history" not in st.session_state:
       AIMessage(
         content="""
         Hello! I'm a SQL assistant.\n
-        The dataset represents trending YouTube videos in various countries. It contains separate tables for this 
-        country (Brazil, Canada, France, Germany, Great Britain, India, Japan, Korea, and Mexico), each with detailed 
-        information on trending videos in that country. Each table includes fields such as video ID, title, 
-        publication date, channel ID, channel title, category ID, trending date, tags, view count, likes, dislikes, 
-        comment count, thumbnail link, whether comments are disabled, whether ratings are disabled, and video description. 
-        There is also a category table that maps category IDs to their titles.\n
-        Ask me anything about database."""),
+        Provide me with any questions you want for any information on the database 
+        (including those indicated above)"""),
     ]
 
-# st.set_page_config(page_title="Query Augmented Generation", page_icon="speech_balloon:", layout="centered")
 
 st.set_page_config(
     page_title="Query Augmented Generation",
@@ -241,14 +198,13 @@ with col1:
 # with col2:
 #    st.image("llm.jpg")
 
-# st.title("Query Augmented Generation")
 
 with st.expander("Write this sentences if you want more information...", expanded=True):
     st.write(
         """
         - What table and his attributes there are in this database?
-        - Count the average number of videos for each tables on database.
-        - Count the number of videos on database.
+        - Count the average number of rows for each tables on database.
+        - Count the number of rows on database.
     """
     )
 
@@ -274,7 +230,7 @@ if user_query is not None and user_query.strip() != "":
         with st.chat_message("Human"):
             st.markdown(user_query)
             llm = get_database_info(db=db)
-            response = llm.invoke({"question": user_query})
+            response = llm.invoke({})
             
         with st.chat_message("AI"):
             st.markdown(response)
