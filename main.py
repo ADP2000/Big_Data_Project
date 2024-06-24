@@ -107,6 +107,7 @@ def get_sql_chain(db):
     <SCHEMA>{schema}</SCHEMA>
         
     Write only the SQL query and nothing else. Do not wrap the SQL query in any other text, not even backticks.
+    You have to use ONLY this table and not others. The information shcema table is not available.
     
     Your turn:
     
@@ -170,7 +171,7 @@ spark = SparkSession.builder \
     .config("spark.jars", "./dependencies/postgresql-42.7.3.jar") \
     .getOrCreate()
 
-create_views_for_query(URI, spark)
+create_views_for_query(spark)
 
 ###################
 ### STREAMLIT #####
