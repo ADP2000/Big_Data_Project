@@ -1,7 +1,8 @@
 # Big_Data_Project
 
 ## Overview
-This is a Streamlit application that enhances SQL query generation using GPT-3 language models. The application connects to a PostgreSQL database and allows users to interact with a natural language interface to query database information.
+This is a Query Augmented Gneration application that enhances SQL query generation using LLama3-8B. 
+The application connects to a PostgreSQL database and allows users to interact with a natural language interface to query database information. The UI is managed via the streamlit framework.
 
 ## Setup Instructions
 Follow these steps to set up and run the application:
