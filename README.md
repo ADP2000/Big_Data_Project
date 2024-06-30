@@ -35,7 +35,7 @@ Set up environment variables:
 ```plaintext
 GROQ_API_KEY = API_KEY_GROQ
 ```
-replace API_KEY_GROQ with your api key groq available available via the groq cloud service
+replace API_KEY_GROQ with your api key groq available via the groq cloud service
 
 ### Running the Application
 1. Run the Streamlit app:

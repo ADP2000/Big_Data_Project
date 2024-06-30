@@ -240,7 +240,7 @@ def main():
             st.write(
                 """
                 - What table and his attributes there are in this database?
-                - Count the average number of on database.
+                - Count the average number of rows on database.
                 - Count the total number of rows on database.
             """
             )
